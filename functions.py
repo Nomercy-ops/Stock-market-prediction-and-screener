@@ -3,18 +3,18 @@ import numpy as np
 
 
 
-@st.cache
-def calc_moving_average(data, size):
-        df = data.copy()
+@st.cache_data
+def calc_moving_average(df, size):
+        # df = data.copy()
         df['sma'] = df['Close'].rolling(int(size)).mean()
         df['ema'] = df['Close'].ewm(span=size, min_periods=size).mean()
         df.dropna(inplace=True)
         return df
 
 #Function for Moving Average Convergence Divergence
-@st.cache
-def calc_macd(data):
-        df = data.copy()
+@st.cache_data
+def calc_macd(df):
+        # df = data.copy()
         df['ema12'] = df['Close'].ewm(span=12, min_periods=12).mean()
         df['ema26'] = df['Close'].ewm(span=26, min_periods=26).mean()
         df['macd'] = df['ema12'] - df['ema26']
@@ -23,9 +23,9 @@ def calc_macd(data):
         return df
 
 #function for bollinger Bands
-@st.cache
-def calc_bollinger(data, size):
-        df = data.copy()
+@st.cache_data
+def calc_bollinger(df, size):
+        # df = data.copy()
         df['sma'] = df['Close'].rolling(int(size)).mean()
         df["bolu"] = df["sma"] + 2 * df['Adj Close'].rolling(int(size)).std(ddof=0)
         df["bold"] = df["sma"] - 2 * df['Adj Close'].rolling(int(size)).std(ddof=0)
@@ -34,10 +34,10 @@ def calc_bollinger(data, size):
         return df
 
 #function for ATR-Average True Range
-@st.cache
-def ATR(data, n):
+@st.cache_data
+def ATR(df, n):
         "function to calculate True Range and Average True Range"
-        df = data.copy()
+        # df = data.copy()
         df['H-L'] = abs(df['High'] - df['Low'])
         df['H-PC'] = abs(df['High'] - df['Adj Close'].shift(1))
         df['L-PC'] = abs(df['Low'] - df['Adj Close'].shift(1))
@@ -47,10 +47,10 @@ def ATR(data, n):
         return df2
 
     #function to calculate RSI
-@st.cache
-def RSI(data, n):
+@st.cache_data
+def RSI(df, n):
         "function to calculate RSI"
-        df = data.copy()
+        # df = data.copy()
         df['delta'] = df['Adj Close'] - df['Adj Close'].shift(1)
         df['gain'] = np.where(df['delta'] >= 0, df['delta'], 0)
         df['loss'] = np.where(df['delta'] < 0, abs(df['delta']), 0)
@@ -75,10 +75,10 @@ def RSI(data, n):
         return df
 
 #Function to calculate ADX
-@st.cache
-def ADX(data, n):
+@st.cache_data
+def ADX(df2, n):
         "function to calculate ADX"
-        df2 = data.copy()
+        # df2 = data.copy()
         df2['TR'] = ATR(df2, n)[
             'TR']  # the period parameter of ATR function does not matter because period does not influence TR calculation
         df2['DMplus'] = np.where((df2['High'] - df2['High'].shift(1)) > (df2['Low'].shift(1) - df2['Low']),
@@ -127,10 +127,10 @@ def ADX(data, n):
         return df2['ADX']
 
 #function to calculate OBV
-@st.cache
-def OBV(DF):
+@st.cache_data
+def OBV(df):
         """function to calculate On Balance Volume"""
-        df = DF.copy()
+        # df = DF.copy()
         df['daily_ret'] = df['Adj Close'].pct_change()
         df['direction'] = np.where(df['daily_ret'] >= 0, 1, -1)
         df['direction'][0] = 0

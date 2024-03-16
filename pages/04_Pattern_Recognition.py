@@ -142,11 +142,11 @@ with st.container():
         coll_11.metric('Patterns with bullish signals', bullish_count)
         coll_22.metric('Pattersn with bearish signals', bearish_count)
 
-@st.cache
+@st.cache_data
 def color_survived(val):
         color = 'green' if val == 'Bullish' else 'red' if val == 'Bearish' else None
         return f'background-color: {color}'
 st.write('#### All candlestick patterns signals ')
-st.table(signal_df.style.applymap(color_survived, subset=['Signal']))
+st.table(signal_df.style.map(color_survived, subset=['Signal']))
 
 sample = len(signal_df[signal_df['Signal'] == 'Bullish'])

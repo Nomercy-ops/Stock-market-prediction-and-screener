@@ -261,7 +261,7 @@ st.subheader('Aroon Indicator')
 st.write(
     "The Aroon indicator is a technical indicator that is used to identify trend changes in the price of an asset, as well as the strength of that trend. In essence, the indicator measures the time between highs and the time between lows over a time period.The indicator consists of the 'Aroon up' line, which measures the strength of the uptrend, and the 'Aroon down' line, which measures the strength of the downtrend.")
 
-aroon = ta.trend.AroonIndicator(df['Close'], 14)
+aroon = ta.trend.AroonIndicator(df['Close'],df['open'], 14)
 df['aroon_down'] = aroon.aroon_down()
 df['aroon_indicator'] = aroon.aroon_indicator()
 df['aroon_up'] = aroon.aroon_up()
